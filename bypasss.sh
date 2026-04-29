@@ -1,41 +1,39 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
+clear
 echo "=============================="
-echo "   STEALTH HIDE SYSTEM"
+echo "     SS HIDER MENU"
 echo "=============================="
 echo ""
+echo "1 - ATIVAR OCULTAÇÃO"
+echo "2 - DESATIVAR OCULTAÇÃO"
+echo "3 - SAIR"
+echo ""
+read -p "Escolha: " opcao
 
 # Apps
 VPN="com.india.vpn"
 BREVENT="me.piebridge.brevent"
 FFMAX="com.dts.freefiremax"
 
-echo "[+] Desativando apps..."
+ativar() {
+    pm disable-user --user 0 "$VPN"
+    pm disable-user --user 0 "$BREVENT"
+    pm disable-user --user 0 "$FFMAX"
+    echo "[✓] Ocultação ativada"
+}
 
-pm disable-user --user 0 "$VPN"
-pm disable-user --user 0 "$BREVENT"
-pm disable-user --user 0 "$FFMAX"
+desativar() {
+    pm enable "$VPN"
+    pm enable "$BREVENT"
+    pm enable "$FFMAX"
+    echo "[✓] Ocultação desativada"
+}
 
-echo "[✓] Apps ocultados do launcher"
-
-echo ""
-echo "[+] Tentando ocultar mídia (nomedia)..."
-
-# Pastas comuns (podem ou não existir)
-DIR1="/sdcard/Android/data/$VPN"
-DIR2="/sdcard/Android/data/$BREVENT"
-DIR3="/sdcard/Android/data/$FFMAX"
-
-for dir in "$DIR1" "$DIR2" "$DIR3"
-do
-  if [ -d "$dir" ]; then
-    touch "$dir/.nomedia"
-    echo "[✓] .nomedia criado em $dir"
-  else
-    echo "[!] Pasta não encontrada: $dir"
-  fi
-done
-
-echo ""
-echo "[✔] Processo concluído"
-echo "OBS: arquivos NÃO foram escondidos do sistema, apenas da galeria"
+if [ "$opcao" = "1" ]; then
+    ativar
+elif [ "$opcao" = "2" ]; then
+    desativar
+else
+    echo "Saindo..."
+fi
